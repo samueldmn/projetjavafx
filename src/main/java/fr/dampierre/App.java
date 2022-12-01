@@ -6,7 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.sql.Statement;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * JavaFX App
@@ -32,7 +37,40 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        // launch();
+        connect();
     }
+public static void connect() {
 
+
+String dbURL = "jdbc:mysql://localhost:3306/sample";
+String nomUtilisateur = "monid";
+String mdp = "monmotdepassefort";{
+
+try {
+  Connection conn = DriverManager.getConnection(dbURL, nomUtilisateur, mdp);
+  if (conn != null) {
+    System.out.println("Connexion réussie !");
+  }
+} catch (SQLException ex) {
+  ex.printStackTrace();
+  
+String sql = "SELECT nom, email FROM utilisateurs";
+Statement requete = conn.createStatement();
+
+ResultSet res = requete.executeQuery(sql);
+
+int compteur = 0;
+
+while (res.next()) {
+  compteur++;
+  String nom = res.getString("nom");     
+  String email = res.getString("email"); 
+ 
+  String sortie = "Utilisateur no. " + compteur + " : " + nom + " (" + email + ")";
+  System.out.println(sortie);
+}
+}
+}
+}
 }
